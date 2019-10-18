@@ -136,10 +136,14 @@ function PublishForm(props: Props) {
           help={__('The better your tags are, the easier it will be for people to discover your content.')}
           empty={__('No tags added')}
           placeholder={__('Add a tag')}
-          onSelect={newTag => {
-            if (!tags.map(savedTag => savedTag.name).includes(newTag.name)) {
-              updatePublishForm({ tags: [...tags, newTag] });
-            }
+          onSelect={newTags => {
+            const validatedTags = [];
+            newTags.map(newTag => {
+              if (!tags.map(tag => tag.name).includes(newTag.name)) {
+                validatedTags.push(newTag);
+              }
+            });
+            updatePublishForm({ tags: [...tags, ...validatedTags] });
           }}
           onRemove={clickedTag => {
             const newTags = tags.slice().filter(tag => tag.name !== clickedTag.name);
